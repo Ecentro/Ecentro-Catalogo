@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo de Productos</title>
+  <link rel="icon" href="Imagenes/Logo/Logo.png">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <style>
+    body {
+      background-color: #FFFFFF;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #363636;
+      color: #FFFFFF;
+    }
+
+    .navbar {
+      background-color: #ffffff;
+      transition: background-color 0.3s;
+    }
+
+    .navbar-dark .navbar-toggler-icon {
+      background-color: #FFFFFF;
+    }
+
+    .navbar.dark {
+      background-color: #363636;
+    }
+
+    .navbar-brand {
+      color: #FFFFFF;
+      transition: color 0.3s;
+    }
+
+    .btn-filtro {
+      background-color: #df0000;
+      color: #FFFFFF;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+    }
+
+    .btn-filtro.active,
+    .btn-filtro:hover {
+      box-shadow: 2px 2px 5px rgba(139, 0, 0, 0.3);
+    }
+
+    .btn-filtro:hover {
+      background-color: #610000;
+    }
+
+    .btn-filtro:hover,
+    .btn-filtro:hover {
+      color: #FFFFFF !important;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      transition: background-color 0.3s;
+    }
+
+    .logo-container.dark {
+      background-color: #363636;
+    }
+
+    h1 {
+      color: #000000;
+      transition: color 0.3s;
+    }
+
+    #productos-container {
+      background-color: #FFFFFF;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+
+    #productos-container.dark {
+      background-color: #363636;
+    }
+
+    .card {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s;
+    }
+
+    .card.dark {
+      background-color: #363636;
+      color: #FFFFFF;
+    }
+
+    .card:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-text-altura {
+      white-space: pre-line;
+      transition: color 0.3s;
+    }
+
+    .enlarge-image {
+      cursor: pointer;
+    }
+
+    #pagina-web-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: #df0000;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    #pagina-web-icon:hover {
+      color: #610000;
+    }
+
+    #modo-oscuro-btn {
+      transition: color 0.3s;
+    }
+
+    #modo-oscuro-btn.dark {
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="Imagenes/Logo/Logo Vectorizado Color.png" alt="Logo de la empresa" height="50">
+    </a>
+    <button id="modo-oscuro-btn" class="btn btn-dark"><i class="fas fa-moon"></i></button>
+  </div>
+</nav>
+
+<div class="container mt-4">
+
+  <!-- Filtros por categoría -->
+  <div class="mb-3">
+    <button class="btn btn-filtro" data-filter="">NUESTROS PRODUCTOS</button>
+    <button class="btn btn-filtro" data-filter="columnas">COLUMNAS</button>
+    <button class="btn btn-filtro" data-filter="brazos">BRAZOS</button>
+    <button class="btn btn-filtro" data-filter="accesorios">ACCESORIOS</button>
+    <button class="btn btn-filtro" data-filter="proyectos">PROYECTOS</button>
+  </div>
+
+  <!-- Contenedor de productos -->
+  <div class="row" id="productos-container">
+  </div>
+</div>
+
+<!-- Plantilla de Producto -->
+<div id="producto-template" style="display: none;">
+  <div class="col-md-4 mb-4 producto" data-categoria="">
+    <div class="card">
+      <img src="imagen_producto.jpg" class="card-img-top enlarge-image" alt="Imagen del producto">
+      <div class="card-body">
+        <h5 class="card-title">Nombre del Producto</h5>
+        <p class="card-text card-text-altura">Descripción breve del producto.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Icono de página web -->
+<a id="pagina-web-icon" href="https://wa.me/+5493541590929" target="_blank">
+  <img src="Imagenes/Logo/Whatsapp Logo.png" alt="Icono de página web" style="width: 50px; height: 50px; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.3));">
+</a>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // Productos
+  var productos = [
+    { categoria: "columnas", nombre: "COLUMNA RECTA", descripcion: "> Altura: 6,2mt - > Altura: 7,4mt - > Altura: 8,2mt - > Altura: 9,3mt - > Altura: 10,9mt", imagen: "Imagenes/Columnas/Recta/Columna Recta.jpg" },
+    { categoria: "columnas", nombre: "COLUMNA CON BRAZO R500", descripcion: "> Altura: 7,5mt Vuelo: 2mt - > Altura: 7,7mt Vuelo: 1,5mt - > Altura: 8,5mt Vuelo: 2mt - > Altura: 8,9mt Vuelo: 2,5mt - > Altura: 10,2mt Vuelo: 2,5mt", imagen: "Imagenes/Columnas/R500/Columna con Brazo r500.jpg" },
+    { categoria: "columnas", nombre: "COLUMNA CON BRAZO R1500 - R2000", descripcion: "> Altura: 7,8mt Vuelo: 1,5mt Radio: 1,5mt - > Altura: 8,6mt Vuelo: 2mt Radio: 2mt - > Altura: 9,2mt Vuelo: 2mt Radio: 2mt - > Altura: 9,2mt Vuelo: 2,5mt Radio: 2,5mt - > Altura: 9,7mt Vuelo: 2,5mt Radio: 2mt", imagen: "Imagenes/Columnas/R1500/Columna con Brazo r1500.jpg" },
+    { categoria: "columnas", nombre: "COLUMNA CON BRAZO DOBLE CURVA", descripcion: "> Altura: 7,8mt Vuelo: 1,5mt Radio: 1,5mt - > Altura: 8,6mt Vuelo: 2mt Radio: 2mt - > Altura: 9,2mt Vuelo: 2mt Radio: 2mt - > Altura: 9,2mt Vuelo: 2,5mt Radio: 2,5mt - > Altura: 9,7mt Vuelo: 2,5mt Radio: 2mt", imagen: "Imagenes/Columnas/Doble/Columna con Brazo Doble.jpg" },
+    { categoria: "columnas", nombre: "COLUMNA CON GUARDA HOMBRE", descripcion: "Comunícate para solicitar una cotización.", imagen: "Imagenes/Columnas/Guarda Hombre/Columna con Guarda Hombre.jpg" },
+    { categoria: "columnas", nombre: "COLUMNA 3 BRAZOS", descripcion: "Comunícate para solicitar una cotización.", imagen: "Imagenes/Columnas/3 Brazos/Columna 3 Brazos.jpg" },
+    { categoria: "brazos", nombre: "BRAZO 2 TRAMOS SIN CHUPETE", descripcion: "> 1mt - > 1,2mt - > 1,5mt - > 2mt - > 3mt", imagen: "Imagenes/brazos/Brazo 2 Tramos 1200 Sin Chupete.png" },
+    { categoria: "brazos", nombre: "BRAZO 2 TRAMOS CON CHUPETE", descripcion: "> 1mt - > 1,2mt - > 1,5mt - > 2mt - > 3mt", imagen: "Imagenes/brazos/Brazo 2 Tramos 1200 Con Chupete.png" },
+    { categoria: "brazos", nombre: "BRAZO 3 TRAMOS SIN CHUPETE", descripcion: "> 1,5mt - > 2mt - > 3mt", imagen: "Imagenes/brazos/Brazo 3 Tramos 1500 Sin Chupete.png" },
+    { categoria: "brazos", nombre: "BRAZO 3 TRAMOS CON CHUPETE", descripcion: "> 1,5mt - > 2mt - > 3mt", imagen: "Imagenes/brazos/Brazo 3 Tramos 1500 Con Chupete.png" },
+    { categoria: "accesorios", nombre: "ABRAZADERAS", descripcion: "> 60mm - > 120mm - > 140mm - > 160mm - > 180mm - > 200mm - > 220mm - > 240mm - > 260mm - > 280mm - > 300mm - > 320mm - > 350mm", imagen: "Imagenes/Accesorios/Abrazaderas/Abrazaderas.png" },
+    { categoria: "accesorios", nombre: "RACK", descripcion: "> 1 Aislador - > 2 Aisladores - > 4 Aisladores", imagen: "Imagenes/Accesorios/Rack/Rack.png" },
+    { categoria: "proyectos", nombre: "COLUMNA ARBOL 1", descripcion: "Comunícate para solicitar una cotización.", imagen: "Imagenes/Proyectos/Arbol 1.png" },
+    { categoria: "proyectos", nombre: "COLUMNA ARBOL 2", descripcion: "Comunícate para solicitar una cotización.", imagen: "Imagenes/Proyectos/Arbol 2.png" },
+    { categoria: "proyectos", nombre: "COLUMNA ARBOL 3", descripcion: "Comunícate para solicitar una cotización.", imagen: "Imagenes/Proyectos/Arbol 3.png" },
+    { categoria: "proyectos", nombre: "COLUMNA HOJAS", descripcion: "Comunícate para solicitar una cotización.", imagen: "Imagenes/Proyectos/Hojas.png" },
+    { categoria: "proyectos", nombre: "COLUMNA LAPIZ", descripcion: "Comunícate para solicitar una cotización.", imagen: "Imagenes/Proyectos/Lapices.png" },
+  ];
+
+  // Función para cargar productos en la página
+  function cargarProductos(categoria) {
+    var container = $('#productos-container');
+    container.empty();
+
+    productos.forEach(function(producto) {
+      if (categoria === "" || producto.categoria === categoria) {
+        var template = $('#producto-template').clone();
+        template.find('.producto').attr('data-categoria', producto.categoria);
+        template.find('.card-title').text(producto.nombre);
+        template.find('.card-text-altura').html(producto.descripcion.replace(/ - /g, '<br>'));
+        template.find('.card-img-top').attr('src', producto.imagen);
+
+        container.append(template.html());
+      }
+    });
+
+    $('.enlarge-image').on('click', function() {
+      var src = $(this).attr('src');
+      var modalHtml = '<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">';
+      modalHtml += '<div class="modal-dialog modal-dialog-centered" role="document">';
+      modalHtml += '<div class="modal-content"><div class="modal-body">';
+      modalHtml += '<img src="' + src + '" class="img-fluid">';
+      modalHtml += '</div></div></div></div>';
+
+      var modal = $(modalHtml);
+      modal.modal('show');
+
+      modal.on('hidden.bs.modal', function () {
+        modal.remove();
+      });
+    });
+  }
+
+  $('.btn-filtro').on('click', function() {
+    $('.btn-filtro').removeClass('active');
+    $(this).addClass('active');
+    var categoria = $(this).data('filter');
+    cargarProductos(categoria);
+  });
+
+  cargarProductos("");
+
+  // Modo Oscuro
+  $(document).ready(function() {
+    $('#modo-oscuro-btn').on('click', function() {
+      $('body, .navbar, #productos-container, .card, h1, .card-text-altura, #pagina-web-icon, .logo-container').toggleClass('dark');
+      if ($('body').hasClass('dark')) {
+        $('#modo-oscuro-btn').html('<i class="fas fa-sun"></i>');
+      } else {
+        $('#modo-oscuro-btn').html('<i class="fas fa-moon"></i>');
+      }
+    });
+  });
+</script>
+<br>
+</body>
+</html>
